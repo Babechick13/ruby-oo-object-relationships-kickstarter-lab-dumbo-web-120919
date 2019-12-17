@@ -1,3 +1,4 @@
+require 'pry'
 class ProjectBacker
 attr_reader :project, :backer
 
