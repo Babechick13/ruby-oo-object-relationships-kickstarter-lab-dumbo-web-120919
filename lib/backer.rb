@@ -1,28 +1,24 @@
-require 'pry'
 class Backer
-  attr_reader :name, :back_project
-  
-def initialize(name)
-  @name = name 
-end 
+  attr_reader :name, :backed_projects
+  attr_reader :name
 
-def back_project(project)
-  #binding.pry 
-  ProjectBacker.new(project, self) 
-  #binding.pry
-end 
+  def initialize(name)
+    @name = name
+    @backed_projects = []
+  end
 
-def projects 
-  backed_projects.compact
-end 
+  def back_project(project)
+    backed_projects << project
+    project.backers << self
+    ProjectBacker.new(project, self)
+  end
 
-def backed_projects
-  Projectbacker.all.map do |pros_b|
-    if pros_b.backer == self
-      pros_b.project 
+  def backed_projects
+    project_backers = ProjectBacker.all.select do |pb|
+      pb.backer == self
+    end
+    project_backers.map do |pb|
+      pb.project
     end
   end
-end
-
-  #binding.pry
 end
